@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+</head>
+<body>
+    <script>
+
+        //task 1
+        function getPrayerTime(city,country){
+        fetch(`https://api.aladhan.com/v1/calendarByCity?city=${city}&country=${country}&month=12&year=2022`)
+        .then(data => data.json())
+        .then(function(parsedJSON){
+            let myDate = new Date()
+            let today = moment().format("DD-MM-YYYY")
+            let exactTime = moment(myDate, "HH:mm")
+            Object.values(parsedJSON.data).find(function(element){ 
+                if(element.date.gregorian.date == today){
+                    let timings = element.timings
+                    //Task 1.1
+                    console.log(timings);
+                    Object.values(timings).forEach(
+                        function(namazTime){
+                            let operate = moment(namazTime.slice(0,5), "HH:mm")
+                            if((operate.diff(exactTime,"minutes")) == 15){
+                                //Task 1.2
+                            console.log("Namaz Vaxti")}
+                               
+                        }
+                    )
+                    
+                }
+            })
+        })
+    }
+
+
+
+    //task 2
+    function getMonthData(city,country,month,year){
+        fetch(`https://api.aladhan.com/v1/calendarByCity?city=${city}&country=${country}&month=${month}&year=${year}`)
+        .then(data => data.json())
+        .then(function(parsedJSON){
+            console.log(parsedJSON.data);
+        })}
+    </script>
+</body>
+</html>
